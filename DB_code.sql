@@ -1,9 +1,9 @@
 -- Table: Schedule
 CREATE TABLE schedule (
     ID INTEGER PRIMARY KEY,
-    date INTEGER CHECK (length(date) = 4),
+    date INTEGER CHECK (length(date) = 8),
     start_time INTEGER CHECK (length(start_time) = 4),
-    hours INTEGER CHECK (hours BETWEEN 1 AND 12)
+    hours INTEGER CHECK (hours BETWEEN 1 AND 12),
     w_ID INTEGER,
     FOREIGN KEY (w_ID) REFERENCES workers(ID)
 );
@@ -22,8 +22,8 @@ CREATE TABLE workers (
     name TEXT,
     phone_number INTEGER CHECK (length(phone_number) = 10),
     bank_number INTEGER CHECK (length(bank_number) BETWEEN 8 AND 12),
-    wage DECIMAL CHECK ((type = 'e' AND wage >= 12 AND wage <= 25) OR (type = 'm' AND wage >= 15 AND wage <= 30)),
-    type CHAR CHECK (type IN ('e', 'm'))
+    type CHAR CHECK (type IN ('e', 'm')),
+    wage DECIMAL CHECK ((type = 'e' AND wage >= 12 AND wage <= 25) OR (type = 'm' AND wage >= 15 AND wage <= 30))    
 );
 
 -- Table: Products 
