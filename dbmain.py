@@ -5,7 +5,7 @@ conn = database.connect_to_database('database_project.db')
 # Function to set user input for date, start_time, and hours
 def set_schedule():
     w_id = input("Enter worker ID: ")
-    sdate = input("Enter date (MMDDYYYY): ")
+    sdate = input("Enter date (MMDD): ")
     start_time = input("Enter start time (HHMM): ")
     hours = input("Enter hours: ")
     return {"date": sdate, "start_time": start_time, "hours": hours, "w_ID": w_id}
@@ -37,14 +37,17 @@ def set_product():
 def set_transaction():
     tid = input("Enter transaction ID: ")
     tcount = input("Enter transaction count: ")
-    money = input("Enter transaction amount: ")
-    tdate = input("Enter transaction date (MMDDYYYY): ")
-    return {"ID": tid, "count": tcount, "money": money, "date": tdate}
+    money = input("Enter transaction price: ")
+    tdate = input("Enter transaction date (MMDD): ")
+    p_ID = input("Enter product ID: ")
+    w_ID = input("Enter worker ID: ")
+    c_ID = input("Enter customer ID: ")
+    return {"ID": tid, "count": tcount, "money": money, "date": tdate, "p_ID": p_ID, "w_ID": w_ID, "c_ID": c_ID}
 
 # Queries for requesting information from the database
 def get_worker_id():
     wid = input("Enter worker ID: ")
-    query = f"SELECT ID, name FROM workers WHERE ID = ?;"
+    query = f"SELECT ID, name, type FROM workers WHERE ID = ?;"
     cursor = conn.cursor()
     cursor.execute(query, (wid,))
     rows = cursor.fetchall()
@@ -52,7 +55,7 @@ def get_worker_id():
         print("Invalid worker ID, please try again.")
         return None
     else:
-        return wid, rows[0][1]
+        return wid, rows[0][1], rows[0][2]
     
 def get_schedule(wid):
     query = f"SELECT date, start_time, hours FROM schedule WHERE w_ID = ?;"
@@ -90,8 +93,20 @@ def get_customer_id(email):
     else:
         return None
 
+def get_points(c_ID):
+    query = f"SELECT points FROM customer WHERE ID = ?;"
+    cursor = conn.cursor()
+    cursor.execute(query, (c_ID,))
+    rows = cursor.fetchall()
+    
+    if len(rows) == 0:
+        print("No points found for this customer.")
+    else:
+        for row in rows:
+            print("Points:", row[0])
+
 def get_transaction(c_ID):
-    query = f"SELECT * FROM transaction WHERE c_ID = ?;"
+    query = f"SELECT * FROM transactions WHERE c_ID = ?;"
     cursor = conn.cursor()
     cursor.execute(query, (c_ID,))
     rows = cursor.fetchall()
@@ -139,13 +154,13 @@ def managedb(cursor):
     while True:
         conn = database.connect_to_database('database_project.db')
         # Get user input for the table and operation
-        table = input("\nEnter table name (schedule, customer, workers, products, transaction, CLOSE): ").lower()
+        table = input("\nEnter table name (schedule, customer, workers, products, transactions, CLOSE): ").lower()
 
         if table == "close":
             print("Closing")
             break  # Exit the loop and close the program
 
-        if table not in ["schedule", "customer", "workers", "products", "transaction"]:
+        if table not in ["schedule", "customer", "workers", "products", "transactions"]:
             print("Invalid table name. Enter valid table. ")
             continue
 
@@ -163,7 +178,7 @@ def managedb(cursor):
                 data = set_worker()
             elif table == "products":
                 data = set_product()
-            elif table == "transaction":
+            elif table == "transactions":
                 data = set_transaction()
 
             # Construct the query dynamically using placeholders

@@ -1,7 +1,7 @@
 -- Table: Schedule
 CREATE TABLE schedule (
     ID INTEGER PRIMARY KEY,
-    date INTEGER CHECK (length(date) = 8),
+    date INTEGER CHECK (length(date) = 4),
     start_time INTEGER CHECK (length(start_time) = 4),
     hours INTEGER CHECK (hours BETWEEN 1 AND 12),
     w_ID INTEGER,
@@ -35,11 +35,11 @@ CREATE TABLE products (
 );
 
 -- Table: Transaction 
-CREATE TABLE transaction (
+CREATE TABLE transactions (
     ID INTEGER PRIMARY KEY,
     count INTEGER,
     money DECIMAL,
-    date INTEGER CHECK (length(date) = 8),
+    date INTEGER CHECK (length(date) = 4),
     p_ID INTEGER,
     w_ID INTEGER,
     c_ID INTEGER,
