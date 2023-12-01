@@ -1,12 +1,13 @@
 Instructions for using database
 
-Open a new terminal and type the command 'python database.py'
+Open a new terminal in visual studio and type the command 'python database.py'
+Alternatively, run the database.py file in a python IDE such as IDLE
 
 Follow the prompts in the terminal to sign in as a worker (manager or employee) or a customer
 
-If signed in as a manager, user can add, delete, view, or update any table in the database
-If signed in as an employee, user can view schedule, wages, and products
-If signed in as customer, user can view products or transactions
+If signed in as a manager, user can add, delete, view, or update any table in the database,  use ID 1002 to sign in as a manager
+If signed in as an employee, user can view schedule, wages, and products, use ID 1001 to sign in as an employee
+If signed in as customer, user can view products or transactions, use email johndoe@gmail.com to sign in as a customer
 
 Alternatively, instead of logging in, user can enter queries for output using database data.
 
