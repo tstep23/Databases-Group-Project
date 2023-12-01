@@ -28,7 +28,7 @@ def worker_menu(conn, cursor):
         if worker_choice == "1":
             wid = dbmain.get_worker_id()
             while wid is not None:
-                print("\nEmployee Menu for " + wid + ":")
+                print("\nEmployee Menu for ID " + wid + ":")
                 print("1. View Schedule")
                 print("2. View Products")
                 print("3. View Wage")
@@ -53,9 +53,8 @@ def worker_menu(conn, cursor):
             print("1. View Schedule")
             print("2. View Products")
             print("3. View Wage")
-            print("4. Manage Employees")
-            print("5. Manage Schedules")
-            print("6. Exit")
+            print("4. Manage Database")
+            print("5. Exit")
             employee_choice = input("Enter your choice: ")
             
             if employee_choice == "1":

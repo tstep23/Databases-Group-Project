@@ -4,10 +4,11 @@ conn = database.connect_to_database('database_project.db')
 
 # Function to set user input for date, start_time, and hours
 def set_schedule():
+    w_id = input("Enter worker ID: ")
     sdate = input("Enter date (MMDDYYYY): ")
     start_time = input("Enter start time (HHMM): ")
     hours = input("Enter hours: ")
-    return {"date": sdate, "start_time": start_time, "hours": hours}
+    return {"date": sdate, "start_time": start_time, "hours": hours, "w_ID": w_id}
 
 def set_customer():
     cid = input("Enter customer ID: ")
@@ -67,8 +68,9 @@ def get_product_id():
 # Connect to the database
 def managedb(cursor):
     while True:
+        conn = database.connect_to_database('database_project.db')
         # Get user input for the table and operation
-        table = input("Enter table name (schedule, customer, workers, products, transaction, CLOSE): ").lower()
+        table = input("\nEnter table name (schedule, customer, workers, products, transaction, CLOSE): ").lower()
 
         if table == "close":
             print("Closing")
