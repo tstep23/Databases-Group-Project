@@ -17,7 +17,7 @@ def fetch_data(conn, query):
 def close_connection(conn):
     conn.close()
     
-def worker_menu(conn):
+def worker_menu(conn, cursor):
     while True:
         print("\nEnter employee type: ")
         print("1. Employee")
@@ -68,7 +68,7 @@ def worker_menu(conn):
                 dbmain.get_wage_input() # TODO: Implement this function
             elif employee_choice == "4":
                 # Call function to manage employees
-                dbmain.managedb()
+                dbmain.managedb(cursor)
             else:
                 print("Invalid input, please try again.")
         elif worker_choice == "3":
@@ -100,7 +100,8 @@ def customer_menu(conn):
 def main():
     # Connect to database
     conn = connect_to_database("database_project.db")
-    
+    cursor = conn.cursor()
+
     while True:
         print("\nWelcome to the database project!")
         print("1. Worker")
@@ -111,7 +112,7 @@ def main():
         
         if role_choice == "1":
             # Call function to display worker menu
-            worker_menu(conn)
+            worker_menu(conn, cursor)
         elif role_choice == "2":
             # Call function to display customer menu
             customer_menu(conn)

@@ -65,7 +65,7 @@ def get_product_id():
         return pid
 
 # Connect to the database
-def managedb():
+def managedb(cursor):
     while True:
         # Get user input for the table and operation
         table = input("Enter table name (schedule, customer, workers, products, transaction, CLOSE): ").lower()
