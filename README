@@ -1,0 +1,12 @@
+Instructions for using database
+
+Open a new terminal and type the command 'python database.py'
+
+Follow the prompts in the terminal to sign in as a worker (manager or employee) or a customer
+
+If signed in as a manager, user can add, delete, view, or update any table in the database
+If signed in as an employee, user can view schedule, wages, and products
+If signed in as customer, user can view products and transactions
+
+Alternatively, instead of logging in, user can enter queries for output using database data.
+
