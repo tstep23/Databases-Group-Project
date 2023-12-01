@@ -26,9 +26,10 @@ def worker_menu(conn, cursor):
         worker_choice = input("Enter your choice: ")
         
         if worker_choice == "1":
-            wid = dbmain.get_worker_id()
-            while wid is not None:
-                print("\nEmployee Menu for ID " + wid + ":")
+            worker_info = dbmain.get_worker_id()
+            while worker_info is not None:
+                wid, name = worker_info
+                print("\nEmployee Menu for " + name + ":")
                 print("1. View Schedule")
                 print("2. View Products")
                 print("3. View Wage")
@@ -37,39 +38,44 @@ def worker_menu(conn, cursor):
                 
                 if employee_choice == "1":
                     # Call function to display schedule
-                    dbmain.get_schedule_input()
+                    dbmain.get_schedule(wid)
                 elif employee_choice == "2":
                     # Call function to display products
-                    dbmain.get_products_input()
+                    dbmain.get_products()
                 elif employee_choice == "3":
-                    dbmain.get_wage_input() # TODO: Implement this function
+                    dbmain.get_wage(wid) # 
                 elif employee_choice == "4":
                     break
                 else:
                     print("Invalid input, please try again.")
             
         elif worker_choice == "2":
-            print("\nManager Menu:")
-            print("1. View Schedule")
-            print("2. View Products")
-            print("3. View Wage")
-            print("4. Manage Database")
-            print("5. Exit")
-            employee_choice = input("Enter your choice: ")
-            
-            if employee_choice == "1":
-                # Call function to display schedule
-                dbmain.get_schedule_input()
-            elif employee_choice == "2":
-                # Call function to display products
-                dbmain.get_products_input()
-            elif employee_choice == "3":
-                dbmain.get_wage_input() # TODO: Implement this function
-            elif employee_choice == "4":
-                # Call function to manage employees
-                dbmain.managedb(cursor)
-            else:
-                print("Invalid input, please try again.")
+            worker_info = dbmain.get_worker_id()
+            while worker_info is not None:
+                wid, name = worker_info
+                print("\nManager Menu for " + name + ":")
+                print("1. View Schedule")
+                print("2. View Products")
+                print("3. View Wage")
+                print("4. Manage Database")
+                print("5. Exit")
+                employee_choice = input("Enter your choice: ")
+                
+                if employee_choice == "1":
+                    # Call function to display schedule
+                    dbmain.get_schedule(wid)
+                elif employee_choice == "2":
+                    # Call function to display products
+                    dbmain.get_products()
+                elif employee_choice == "3":
+                    dbmain.get_wage(wid)
+                elif employee_choice == "4":
+                    # Call function to manage employees
+                    dbmain.managedb(cursor)
+                elif employee_choice == "5":
+                    break
+                else:
+                    print("Invalid input, please try again.")
         elif worker_choice == "3":
             break
         else:
@@ -78,23 +84,29 @@ def worker_menu(conn, cursor):
             
 def customer_menu(conn):
     while True:
-        print("\nCustomer Menu:")
-        print("1. View Products")
-        print("2. View Transactions")
-        print("3. Exit")
+        print("Enter customer email: ")
+        email = input()
         
-        customer_choice = input("Enter your choice: ")
+        c_ID = dbmain.get_customer_id(email)
         
-        if customer_choice == "1":
-            # Call function to display products
-            dbmain.get_products_input()
-        elif customer_choice == "2":
-            # Call function to display schedule
-            dbmain.get_transaction_input()
-        elif customer_choice == "3":
-            break
-        else:
-            print("Invalid input, please try again.")        
+        if c_ID is not None:
+            print("\nCustomer Menu for " + email + ":")
+            print("1. View Products")
+            print("2. View Transactions")
+            print("3. Exit")
+            
+            customer_choice = input("Enter your choice: ")
+            
+            if customer_choice == "1":
+                # Call function to display products
+                dbmain.get_products()
+            elif customer_choice == "2":
+                # Call function to display transactions
+                dbmain.get_transaction(c_ID)
+            elif customer_choice == "3":
+                break
+            else:
+                print("Invalid input, please try again.")        
             
 def main():
     # Connect to database
@@ -105,7 +117,8 @@ def main():
         print("\nWelcome to the database project!")
         print("1. Worker")
         print("2. Customer")
-        print("3. Exit")
+        print("3. Custom Query")
+        print("4. Exit")
         
         role_choice = input("Enter your role: ")
         
@@ -116,6 +129,9 @@ def main():
             # Call function to display customer menu
             customer_menu(conn)
         elif role_choice == "3":
+            # Call function to display custom query menu
+            dbmain.custom_query(conn)
+        elif role_choice == "4":
             break
         else:
             print("Invalid input, please try again.")

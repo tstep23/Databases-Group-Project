@@ -18,6 +18,7 @@ def set_customer():
     return {"ID": cid, "email": email, "name": cname, "points": points}
 
 def set_worker():
+    # Thank you :) - Jacob Rogers
     wid = input("Enter worker ID: ")
     wname = input("Enter worker name: ")
     phone = input("Enter worker phone number (10 digits): ")
@@ -43,7 +44,7 @@ def set_transaction():
 # Queries for requesting information from the database
 def get_worker_id():
     wid = input("Enter worker ID: ")
-    query = f"SELECT * FROM workers WHERE ID = ?;"
+    query = f"SELECT ID, name FROM workers WHERE ID = ?;"
     cursor = conn.cursor()
     cursor.execute(query, (wid,))
     rows = cursor.fetchall()
@@ -51,7 +52,60 @@ def get_worker_id():
         print("Invalid worker ID, please try again.")
         return None
     else:
-        return wid
+        return wid, rows[0][1]
+    
+def get_schedule(wid):
+    query = f"SELECT date, start_time, hours FROM schedule WHERE w_ID = ?;"
+    cursor = conn.cursor()
+    cursor.execute(query, (wid,))
+    rows = cursor.fetchall()
+
+    if len(rows) == 0:
+        print("No schedule found for this worker.")
+    else:
+        for row in rows:
+            print("Date:", row[0])
+            print("Start Time:", row[1])
+            print("Hours:", row[2])
+            
+def get_wage(wid):
+    query = f"SELECT wage FROM workers WHERE ID = ?;"
+    cursor = conn.cursor()
+    cursor.execute(query, (wid,))
+    rows = cursor.fetchall()
+    
+    if len(rows) == 0:
+        print("No wage found for this worker.")
+    else:
+        for row in rows:
+            print("Wage:", row[0])
+
+def get_customer_id(email):
+    query = f"SELECT ID FROM customer WHERE email = ?;"
+    cursor = conn.cursor()
+    cursor.execute(query, (email,))
+    row = cursor.fetchone()
+    if row is not None:
+        return row[0]
+    else:
+        return None
+
+def get_transaction(c_ID):
+    query = f"SELECT * FROM transaction WHERE c_ID = ?;"
+    cursor = conn.cursor()
+    cursor.execute(query, (c_ID,))
+    rows = cursor.fetchall()
+
+    if len(rows) == 0:
+        print("No transactions found.")
+    else:
+        for row in rows:
+            print("ID:", row[0])
+            print("Count:", row[1])
+            print("Money:", row[2])
+            print("Date:", row[3])
+            print()  # New line for each transaction
+
     
 def get_product_id():
     pid = input("Enter product ID: ")
@@ -64,6 +118,21 @@ def get_product_id():
         return None
     else:
         return pid
+    
+def get_products():
+    query = f"SELECT ID, Name, count, price FROM products;"
+    cursor = conn.cursor()
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    if len(rows) == 0:
+        print("No products found.")
+    else:
+        for row in rows:
+            print("ID:", row[0])
+            print("Name:", row[1])
+            print("Count:", row[2])
+            print("Price:", row[3])
+            print() # New line for each product
 
 # Connect to the database
 def managedb(cursor):
@@ -148,3 +217,23 @@ def managedb(cursor):
 
     # Close the connection when done
     database.close_connection(conn)
+    
+def custom_query(conn):
+    # Get user input for the query
+    query = input("Enter query (e.g., SELECT * FROM workers): ")
+    
+    # Execute the query
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        
+        # Print the results
+        if len(rows) == 0:
+            print("No results found.")
+        else:
+            for row in rows:
+                print(row)
+                
+    except Exception as e:
+        print("Error executing the query:", e)
