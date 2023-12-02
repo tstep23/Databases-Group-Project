@@ -110,7 +110,7 @@ def customer_menu(conn):
                 customer_choice = input("Enter your choice: ")
 
                 if customer_choice == "1":
-                    # Call function to display products
+                 
                     dbmain.get_products()
                 elif customer_choice == "2":
                     # Call function to display transactions
