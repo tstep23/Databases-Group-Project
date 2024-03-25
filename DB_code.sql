@@ -47,3 +47,10 @@ CREATE TABLE transactions (
     FOREIGN KEY (w_ID) REFERENCES workers(ID),
     FOREIGN KEY (c_ID) REFERENCES customer(ID)
 );
+
+CREATE TABLE parts (
+    ID INTEGER PRIMARY KEY,
+    Name TEXT,
+    Type TEXT,
+    price DECIMAL
+);
